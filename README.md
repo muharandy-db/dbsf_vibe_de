@@ -316,7 +316,7 @@ Once connected, go back to **AI Gateway** in your workspace and click **View das
 
 Now the fun begins! You'll use Claude Code to build a complete data pipeline using only natural language prompts. Follow each exercise in order.
 
-> **Important:** Throughout the exercises, replace `<your_username>` with your actual username (e.g., `fajar_muharandy`). Replace `<your_catalog>` with the catalog name assigned to you in the workspace.
+> **Important:** Throughout the exercises, replace `<your_username>` with your actual username (e.g., `user01`). Replace `<your_catalog>` with the catalog name assigned to you in the workspace.
 
 ---
 
