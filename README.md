@@ -8,7 +8,7 @@ Welcome to the **Vibe Data Engineering Workshop**! In this hands-on tutorial, yo
 
 ## Table of Contents
 
-1. [Prerequisites](#1-prerequisites)
+1. [Prerequisites](#1-prerequisites) — Steps 1–6: workspace, Claude Code, Databricks CLI, AI Dev Kit
 2. [Repository Overview](#2-repository-overview)
 3. [Setting Up Claude Code](#3-setting-up-claude-code)
 4. [Connecting Claude Code to Databricks AI Gateway](#4-connecting-claude-code-to-databricks-ai-gateway)
@@ -25,78 +25,121 @@ Welcome to the **Vibe Data Engineering Workshop**! In this hands-on tutorial, yo
 
 ## 1. Prerequisites
 
-Before starting this workshop, ensure the following:
+### Step 1: Verify Workspace Access
 
-### Access to a Databricks Workspace
+You should already have access to a Databricks workspace. Open your workspace URL in a browser and confirm you can log in.
 
-You should already have access to a Databricks workspace. Confirm you can log in and navigate the workspace UI.
+> If you don't have access yet, contact your workshop facilitator before proceeding.
 
-### Install Claude Code
+---
+
+### Step 2: Install Claude Code
 
 Claude Code is Anthropic's official CLI tool for AI-assisted coding.
 
-**macOS (using Homebrew):**
+<details open>
+<summary><strong>macOS</strong></summary>
+
 ```bash
 brew install claude-code
 ```
-
-**macOS / Linux (using npm):**
+Or via npm:
 ```bash
 npm install -g @anthropic-ai/claude-code
 ```
+</details>
 
-**Windows (using npm):**
+<details>
+<summary><strong>Windows</strong></summary>
+
 ```powershell
 npm install -g @anthropic-ai/claude-code
 ```
+> Requires [Node.js 18+](https://nodejs.org/). Install it first if you don't have it.
+</details>
 
-> If you don't have Node.js installed, download it first from [nodejs.org](https://nodejs.org/) (version 18+).
+<details>
+<summary><strong>Linux</strong></summary>
 
-Verify installation:
+```bash
+npm install -g @anthropic-ai/claude-code
+```
+</details>
+
+**Verify:**
 ```bash
 claude --version
 ```
 
-### Install and Configure the Databricks CLI
+---
 
-**macOS (using Homebrew):**
+### Step 3: Install the Databricks CLI
+
+<details open>
+<summary><strong>macOS</strong></summary>
+
 ```bash
 brew tap databricks/tap
 brew install databricks
 ```
+</details>
 
-**Windows (using winget):**
+<details>
+<summary><strong>Windows</strong></summary>
+
 ```powershell
 winget install Databricks.DatabricksCLI
 ```
+</details>
 
-**Linux / Other (using curl):**
+<details>
+<summary><strong>Linux</strong></summary>
+
 ```bash
 curl -fsSL https://raw.githubusercontent.com/databricks/setup-cli/main/install.sh | sh
 ```
+</details>
 
-Configure a profile to connect to your workspace:
+**Verify:**
+```bash
+databricks --version
+```
+
+---
+
+### Step 4: Configure the Databricks CLI Profile
+
+Create a CLI profile called `WORKSHOP` that points to your workspace:
+
 ```bash
 databricks configure --profile WORKSHOP
 ```
 
 When prompted, enter:
 - **Host**: Your Databricks workspace URL (e.g., `https://adb-1234567890123456.7.azuredatabricks.net`)
-- **Token**: Your personal access token
+- **Token**: Your personal access token (generate one from **User Settings → Developer → Access Tokens** in the workspace)
 
-Verify the connection:
+**Verify:**
 ```bash
 databricks workspace list / --profile WORKSHOP
 ```
 
-### Install the Databricks AI Dev Kit
+You should see a list of workspace directories. If you get an authentication error, double-check your host URL and token.
 
-The [AI Dev Kit](https://github.com/databricks-solutions/ai-dev-kit) gives your AI coding assistant the tools and knowledge it needs to build on Databricks. Install it directly into this project directory.
+---
 
-Make sure you are in the workshop repository root before running the installer:
+### Step 5: Clone This Repository
+
 ```bash
-cd /path/to/dbsf_vibe_de
+git clone https://github.com/muharandy-db/dbsf_vibe_de.git
+cd dbsf_vibe_de
 ```
+
+---
+
+### Step 6: Install the Databricks AI Dev Kit
+
+The [AI Dev Kit](https://github.com/databricks-solutions/ai-dev-kit) gives Claude Code the Databricks-specific tools and knowledge it needs. Run the installer **from inside the project directory**:
 
 **macOS / Linux:**
 ```bash
@@ -108,38 +151,38 @@ bash <(curl -sL https://raw.githubusercontent.com/databricks-solutions/ai-dev-ki
 irm https://raw.githubusercontent.com/databricks-solutions/ai-dev-kit/main/install.ps1 | iex
 ```
 
-Follow the interactive prompts to complete the setup. The installer will configure Claude Code with the Databricks MCP server and skills for this project.
+Follow the interactive prompts to complete the setup.
 
-> **Note:** This installs at project level, so you must run Claude Code from this directory. The configuration files are created under `.claude/` in the project root.
+> **Note:** This installs at project level — you must always run Claude Code from this directory. The configuration is saved under `.claude/` in the project root.
 
 <details>
-<summary><strong>Advanced Options</strong> (click to expand)</summary>
+<summary><strong>Advanced Options</strong></summary>
 
-**Specify a Databricks CLI profile:**
 ```bash
+# Specify a Databricks CLI profile
 bash <(curl -sL https://raw.githubusercontent.com/databricks-solutions/ai-dev-kit/main/install.sh) --profile WORKSHOP
-```
 
-**Force reinstall (if you need to reconfigure):**
-```bash
+# Force reinstall
 bash <(curl -sL https://raw.githubusercontent.com/databricks-solutions/ai-dev-kit/main/install.sh) --force
-```
 
-**Install for specific tools only:**
-```bash
+# Install for Claude Code only
 bash <(curl -sL https://raw.githubusercontent.com/databricks-solutions/ai-dev-kit/main/install.sh) --tools claude
 ```
 
 </details>
 
-### Prerequisites Summary
+---
 
-| Prerequisite | Install Command | Verify |
-|---|---|---|
-| Databricks Workspace | _(provided by your admin)_ | Log in to workspace URL |
-| Claude Code | `npm install -g @anthropic-ai/claude-code` | `claude --version` |
-| Databricks CLI | `brew install databricks` (macOS) | `databricks --version` |
-| AI Dev Kit | `bash <(curl -sL ...)` (see above) | Check `.claude/` directory exists |
+### Checklist
+
+Before moving on, confirm all prerequisites are in place:
+
+- [ ] Can log in to Databricks workspace
+- [ ] `claude --version` returns a version number
+- [ ] `databricks --version` returns a version number
+- [ ] `databricks workspace list / --profile WORKSHOP` returns workspace contents
+- [ ] Repository cloned and you are in the `dbsf_vibe_de` directory
+- [ ] AI Dev Kit installed (`.claude/` directory exists in project root)
 
 ---
 
