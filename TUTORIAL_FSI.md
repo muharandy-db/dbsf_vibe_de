@@ -1,6 +1,6 @@
 # Financial Services Industry (FSI) Tutorial
 
-This tutorial walks you through building a complete FSI data pipeline using Claude Code and Databricks.
+This tutorial walks you through building a complete FSI data pipeline using your coding assistant and Databricks.
 
 > **Before you begin:** Make sure you've completed all steps in the [Prerequisites](README.md#1-prerequisites) section of the main README.
 
@@ -10,7 +10,7 @@ This tutorial walks you through building a complete FSI data pipeline using Clau
 
 ## Exercise 1: Create a Schema
 
-First, let's find out your catalog name. In Claude Code, type:
+First, let's find out your catalog name. In your coding assistant, type:
 
 ```
 List the catalogs available in my Databricks workspace using the Databricks CLI with the WORKSHOP profile
@@ -168,7 +168,7 @@ Start the pipeline:
 2. Click **Start** to run the pipeline
 3. Monitor the DAG visualization as data flows through bronze → silver → gold
 
-**If the pipeline doesn't have a root directory configured**, use this prompt in Claude Code:
+**If the pipeline doesn't have a root directory configured**, use this prompt in your coding assistant:
 
 ```
 The pipeline <your_username>_ingestion doesn't have its root directory set.
@@ -176,7 +176,7 @@ Update the pipeline configuration to set the root directory to the path where
 the SQL files were created. Use the Databricks CLI with the WORKSHOP profile.
 ```
 
-**If the pipeline fails**, use Claude Code to troubleshoot:
+**If the pipeline fails**, use your coding assistant to troubleshoot:
 
 ```
 The pipeline <your_username>_ingestion failed. Can you check the pipeline
@@ -259,5 +259,5 @@ Congratulations! You've completed the FSI tutorial! Here's what you accomplished
 
 **What's Next?**
 - Try modifying the gold-layer transformations or adding new aggregations
-- Ask Claude Code to help you build ML features from the gold tables
+- Ask your coding assistant to help you build ML features from the gold tables
 - Try the [Pharma tutorial](TUTORIAL_PHARMA.md) to build a second pipeline

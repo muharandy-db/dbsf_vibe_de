@@ -12,7 +12,7 @@ NC='\033[0m'
 REPO_URL="https://github.com/muharandy-db/dbxf_vibe_de.git"
 REPO_DIR="dbxf_vibe_de"
 
-print_step() { echo -e "\n${BLUE}${BOLD}[$1/6]${NC} ${BOLD}$2${NC}"; }
+print_step() { echo -e "\n${BLUE}${BOLD}[$1/7]${NC} ${BOLD}$2${NC}"; }
 print_ok()   { echo -e "  ${GREEN}✓${NC} $1"; }
 print_warn() { echo -e "  ${YELLOW}!${NC} $1"; }
 print_err()  { echo -e "  ${RED}✗${NC} $1"; }
@@ -23,34 +23,64 @@ echo "║     Vibe Data Engineering Workshop — Setup Installer    ║"
 echo "╚══════════════════════════════════════════════════════════╝"
 echo -e "${NC}"
 
-# ─── Step 1: Claude Code ─────────────────────────────────────────
-print_step 1 "Installing Claude Code"
+# ─── Step 1: Choose Coding Agent ─────────────────────────────────
+print_step 1 "Choose your coding agent"
 
-if command -v claude &>/dev/null; then
-    print_ok "Claude Code already installed ($(claude --version 2>/dev/null || echo 'unknown version'))"
+echo ""
+echo "  Which coding agent would you like to use?"
+echo ""
+echo "    1) Claude Code  — recommended for Databricks Express / Enterprise Edition"
+echo "    2) Codex CLI    — recommended for Databricks Free Edition"
+echo ""
+read -p "  Enter your choice (1 or 2): " agent_choice
+
+case "$agent_choice" in
+    2)
+        AGENT_NAME="Codex CLI"
+        AGENT_CMD="codex"
+        AGENT_INSTALL_NPM="@openai/codex"
+        AGENT_INSTALL_BREW=""
+        AGENT_CONFIG_DIR=".codex"
+        ;;
+    *)
+        AGENT_NAME="Claude Code"
+        AGENT_CMD="claude"
+        AGENT_INSTALL_NPM="@anthropic-ai/claude-code"
+        AGENT_INSTALL_BREW="claude-code"
+        AGENT_CONFIG_DIR=".claude"
+        ;;
+esac
+
+print_ok "Selected: $AGENT_NAME"
+
+# ─── Step 2: Install Coding Agent ────────────────────────────────
+print_step 2 "Installing $AGENT_NAME"
+
+if command -v "$AGENT_CMD" &>/dev/null; then
+    print_ok "$AGENT_NAME already installed ($($AGENT_CMD --version 2>/dev/null || echo 'unknown version'))"
 else
-    if command -v brew &>/dev/null; then
+    if [ -n "$AGENT_INSTALL_BREW" ] && command -v brew &>/dev/null; then
         echo "  Installing via Homebrew..."
-        brew install claude-code
+        brew install "$AGENT_INSTALL_BREW"
     elif command -v npm &>/dev/null; then
         echo "  Installing via npm..."
-        npm install -g @anthropic-ai/claude-code
+        npm install -g "$AGENT_INSTALL_NPM"
     else
         print_err "Neither Homebrew nor npm found."
         echo "  Please install Node.js 18+ from https://nodejs.org/ and re-run this script."
         exit 1
     fi
 
-    if command -v claude &>/dev/null; then
-        print_ok "Claude Code installed successfully"
+    if command -v "$AGENT_CMD" &>/dev/null; then
+        print_ok "$AGENT_NAME installed successfully"
     else
-        print_err "Claude Code installation failed. Please install manually and re-run."
+        print_err "$AGENT_NAME installation failed. Please install manually and re-run."
         exit 1
     fi
 fi
 
-# ─── Step 2: Databricks CLI ──────────────────────────────────────
-print_step 2 "Installing Databricks CLI"
+# ─── Step 3: Databricks CLI ──────────────────────────────────────
+print_step 3 "Installing Databricks CLI"
 
 if command -v databricks &>/dev/null; then
     print_ok "Databricks CLI already installed ($(databricks --version 2>/dev/null || echo 'unknown version'))"
@@ -75,8 +105,8 @@ else
     fi
 fi
 
-# ─── Step 3: Configure Databricks CLI Profile ────────────────────
-print_step 3 "Configuring Databricks CLI profile"
+# ─── Step 4: Configure Databricks CLI Profile ────────────────────
+print_step 4 "Configuring Databricks CLI profile"
 
 PROFILE="WORKSHOP"
 
@@ -102,8 +132,8 @@ else
     exit 1
 fi
 
-# ─── Step 4: Clone Repository ────────────────────────────────────
-print_step 4 "Cloning workshop repository"
+# ─── Step 5: Clone Repository ────────────────────────────────────
+print_step 5 "Cloning workshop repository"
 
 if [ -d "$REPO_DIR" ]; then
     print_ok "Repository already exists at ./$REPO_DIR"
@@ -117,24 +147,24 @@ else
     print_ok "Repository cloned to ./$REPO_DIR"
 fi
 
-# ─── Step 5: Install AI Dev Kit ──────────────────────────────────
-print_step 5 "Installing Databricks AI Dev Kit"
+# ─── Step 6: Install AI Dev Kit ──────────────────────────────────
+print_step 6 "Installing Databricks AI Dev Kit"
 
-echo "  This will configure Claude Code with Databricks tools and skills."
+echo "  This will configure $AGENT_NAME with Databricks tools and skills."
 echo ""
 bash <(curl -sL https://raw.githubusercontent.com/databricks-solutions/ai-dev-kit/main/install.sh)
 
 print_ok "AI Dev Kit installed"
 
-# ─── Step 6: Verify Everything ───────────────────────────────────
-print_step 6 "Verifying installation"
+# ─── Step 7: Verify Everything ───────────────────────────────────
+print_step 7 "Verifying installation"
 
 all_ok=true
 
-if command -v claude &>/dev/null; then
-    print_ok "Claude Code: $(claude --version 2>/dev/null || echo 'installed')"
+if command -v "$AGENT_CMD" &>/dev/null; then
+    print_ok "$AGENT_NAME: $($AGENT_CMD --version 2>/dev/null || echo 'installed')"
 else
-    print_err "Claude Code: not found"
+    print_err "$AGENT_NAME: not found"
     all_ok=false
 fi
 
@@ -152,10 +182,10 @@ else
     all_ok=false
 fi
 
-if [ -d ".claude" ]; then
+if [ -d "$AGENT_CONFIG_DIR" ]; then
     print_ok "AI Dev Kit: configured"
 else
-    print_warn "AI Dev Kit: .claude directory not found (may need manual setup)"
+    print_warn "AI Dev Kit: $AGENT_CONFIG_DIR directory not found (may need manual setup)"
 fi
 
 echo ""
@@ -163,7 +193,7 @@ if $all_ok; then
     echo -e "${GREEN}${BOLD}Setup complete!${NC}"
     echo ""
     echo "  Next steps:"
-    echo "    1. Launch Claude Code:  claude"
+    echo "    1. Launch $AGENT_NAME:  $AGENT_CMD"
     echo "    2. Pick a tutorial:"
     echo "       - FSI (Financial Services):  open TUTORIAL_FSI.md"
     echo "       - Pharma (Pharmaceutical):   open TUTORIAL_PHARMA.md"
