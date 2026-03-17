@@ -19,7 +19,7 @@ Welcome to the **Vibe Data Engineering Workshop**! In this hands-on tutorial, yo
 ## 1. Prerequisites
 
 Before you begin, make sure you have:
-- Access to a **Databricks workspace** (confirm you can log in)
+- Access to a **Databricks workspace** ([sign up for a free trial](https://www.databricks.com/try-databricks) if you don't have one)
 - **Git** installed on your machine
 - **Node.js 18+** installed ([nodejs.org](https://nodejs.org/)) — required for Claude Code on Windows/Linux
 - **Homebrew** (macOS) or **winget** (Windows) — for package installs
