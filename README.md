@@ -11,7 +11,7 @@ Welcome to the **Vibe Data Engineering Workshop**! In this hands-on tutorial, yo
 | **Databricks Free Edition** | Codex CLI | [**Go to Free Edition setup**](README_FREE.md) |
 | **Databricks Express / Enterprise Edition** | Claude Code | Continue below |
 
-> If you're using **Databricks Free Edition**, follow the [Free Edition guide](README_FREE.md) instead — it uses **Codex CLI** as the coding assistant and does not require AI Gateway setup.
+> If you're using **Databricks Free Edition**, follow the [Free Edition guide](README_FREE.md) instead — it uses **Codex CLI** as the coding assistant with AI Gateway.
 
 ---
 

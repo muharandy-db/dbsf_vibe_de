@@ -176,20 +176,33 @@ Databricks will show you the configuration and a **Generate API Key** button. Cl
 
 ### Step 4: Configure Codex CLI
 
-Create or update the Codex CLI configuration file at `~/.codex/config.toml`:
+First, set the Databricks token as an environment variable:
+
+```bash
+export DATABRICKS_TOKEN=<your_databricks_pat_token>
+```
+
+> **Tip:** Add this to your shell profile (`~/.bashrc`, `~/.zshrc`, etc.) so it persists across sessions.
+
+Then create or update the Codex CLI configuration file at `~/.codex/config.toml`:
 
 ```toml
-model = "databricks-codex"
-provider = "openai"
+profile = "default"
 
-[api]
-base_url = "https://<your-ai-gateway-url>/v1"
-api_key = "<your_token_will_appear_here>"
+[profiles.default]
+model_provider = "proxy"
+model = "databricks-gpt-5-2"
+
+[model_providers.proxy]
+name = "Databricks Proxy"
+base_url = "https://<your-ai-gateway-url>/openai/v1"
+env_key = "DATABRICKS_TOKEN"
+wire_api = "responses"
 ```
 
 Replace:
-- `<your-ai-gateway-url>` with the AI Gateway URL shown in Step 3
-- `<your_token_will_appear_here>` with the API key generated in Step 3
+- `<your-ai-gateway-url>` with the AI Gateway URL shown in Step 3 (e.g., `https://7474644321313099.ai-gateway.cloud.databricks.com`)
+- `<your_databricks_pat_token>` with the API key generated in Step 3
 
 ### Step 5: Verify the Connection
 
