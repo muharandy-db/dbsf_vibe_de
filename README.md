@@ -244,5 +244,6 @@ Both tutorials follow the same structure:
 ---
 
 > **Workshop created for Databricks Express / Enterprise Edition** — Using Claude Code
+>
 > For the Free Edition version (using Codex CLI), see [README_FREE.md](README_FREE.md).
 > For questions or feedback, reach out to your workshop facilitator.
