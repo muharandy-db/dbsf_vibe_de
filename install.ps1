@@ -1,5 +1,5 @@
 #Requires -Version 5.1
-$ErrorActionPreference = "Stop"
+$ErrorActionPreference = "Continue"
 
 $RepoUrl = "https://github.com/muharandy-db/dbxf_vibe_de.git"
 $RepoDir = "dbxf_vibe_de"
@@ -136,16 +136,12 @@ if ($profileOk) {
     Write-Ok "Profile '$Profile' already configured"
     $reconfigure = Read-Host "  Reconfigure? (y/N)"
     if ($reconfigure -eq "y" -or $reconfigure -eq "Y") {
-        $ErrorActionPreference = "Continue"
         & databricks configure --profile $Profile
-        $ErrorActionPreference = "Stop"
     }
 } else {
     Write-Host "  Let's configure the '$Profile' profile to connect to your Databricks workspace."
     Write-Host ""
-    $ErrorActionPreference = "Continue"
     & databricks configure --profile $Profile
-    $ErrorActionPreference = "Stop"
 }
 
 Write-Host "  Verifying connection..."
