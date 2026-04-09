@@ -21,7 +21,7 @@ Note down your catalog name from the output.
 > **Using a shared workspace?** If you're running this tutorial on a shared workspace (not your own personal Databricks Free Edition workspace), you may want to create your own catalog to avoid conflicts with other participants. Use the following prompt:
 >
 > ```
-> Using the Databricks CLI with the WORKSHOP profile, create a catalog called
+> Using the Databricks SQL with the WORKSHOP profile, create a catalog called
 > <your_username>_catalog in my Databricks workspace
 > ```
 >
